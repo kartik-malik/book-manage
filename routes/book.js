@@ -6,16 +6,20 @@ const {
   createABook,
   getAllBooksByPopularity,
 } = require("../handlers/book");
-const { isLoggedIn } = require("../middlewares/auth");
+const {
+  isLoggedIn,
+  isAdmin,
+  ensureCorrectUser,
+} = require("../middlewares/auth");
 
 const router = require("express").Router();
 
-router.route("/").get(getAllBooksByPopularity).post(createABook);
+router.route("/").get(getAllBooksByPopularity).post(isLoggedIn, createABook);
 
 router.get("/search", searchBook);
 router
   .route("/:bookid")
   .get(isLoggedIn, getABook)
-  .put(editBook)
-  .delete(deleteBook);
+  .put(ensureCorrectUser, editBook)
+  .delete(ensureCorrectUser, deleteBook);
 module.exports = router;

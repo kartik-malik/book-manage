@@ -62,5 +62,62 @@ exports.searchBook = async function (req, res, next) {
   }
 };
 
-exports.editBook = async function (req, res, next) {};
-exports.deleteBook = async function (req, res, next) {};
+exports.editBook = async function (req, res, next) {
+  const bookId = req.params.bookId;
+
+  const { title, price, author, userId, year, description, imageUrl, copies } =
+    req.body;
+  try {
+    const book = await books.findOne({
+      userId,
+      _id: bookId,
+    });
+    if (!book) {
+      next({
+        status: 400,
+        message: "Invalid Parameters",
+      });
+    }
+    let updatedBook = await books.findOneAndUpdate(
+      { _id: bookId },
+      {
+        $set: {
+          title,
+          price,
+          author,
+          year,
+          description,
+          imageUrl,
+          copies,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+    return updatedBook;
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteBook = async function (req, res, next) {
+  const bookId = req.params.bookId;
+  const { userId } = req.body;
+  try {
+    const book = await books.findOne({
+      userId,
+      _id: bookId,
+    });
+    if (!book) {
+      next({
+        status: 400,
+        message: "Invalid Parameters",
+      });
+    }
+    let updatedBook = await books.findOneAndDelete({ _id: bookId });
+    return updatedBook;
+  } catch (err) {
+    next(err);
+  }
+};
