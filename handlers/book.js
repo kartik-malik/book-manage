@@ -4,7 +4,7 @@ const books = require("../models/book");
 exports.getAllBooksByPopularity = async function (req, res, next) {
   try {
     const data = await books.find({}).sort({ clicks: -1 }).exec();
-    res.json({ books: data });
+    return res.json({ books: data });
   } catch (error) {
     next(error);
   }
