@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
-mongoose.Promise = Promise;
-mongoose.set("debug", true);
-mongoose.connect("mongodb://localhost:27017/newkroop", {
-  keepAlive: true,
+mongoose.connect(
+  `mongodb+srv://kartik:${process.env.MONGO_PASS}@cluster0.e0tsg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+  {
+    keepAlive: true,
 
-  useNewUrlParser: true,
-});
+    useNewUrlParser: true,
+  }
+);
 module.exports.User = require("./user");
 module.exports.Books = require("./book");
 module.exports.BookIssued = require("./booksIsuued");
