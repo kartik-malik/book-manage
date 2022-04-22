@@ -5,6 +5,7 @@ const {
   getABook,
   createABook,
   getAllBooksByPopularity,
+  issueBook,
 } = require("../handlers/book");
 const {
   isLoggedIn,
@@ -14,12 +15,16 @@ const {
 
 const router = require("express").Router();
 
-router.route("/").get(getAllBooksByPopularity).post(isLoggedIn, createABook);
+router
+  .route("/")
+  .get(getAllBooksByPopularity)
+  .post(isLoggedIn, isAdmin, createABook);
 
 router.get("/search", searchBook);
 router
   .route("/:bookid")
-  .get(isLoggedIn, getABook)
-  .put(ensureCorrectUser, editBook)
-  .delete(ensureCorrectUser, deleteBook);
+  .get(getABook)
+  .put(isAdmin, editBook)
+  .delete(isAdmin, deleteBook);
+router.post("/issue/:bookid", isLoggedIn, issueBook);
 module.exports = router;

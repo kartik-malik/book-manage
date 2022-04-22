@@ -8,3 +8,4 @@ mongoose.connect("mongodb://localhost:27017/newkroop", {
 });
 module.exports.User = require("./user");
 module.exports.Books = require("./book");
+module.exports.BookIssued = require("./booksIsuued");
